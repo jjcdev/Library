@@ -1,0 +1,30 @@
+{
+    "name": "api_lib",
+    "version": "1.0.0",
+    "description": "api d'une petite librarie",
+    "homepage": "https://github.com/jjcdev/Library#readme",
+    "bugs": {
+        "url": "https://github.com/jjcdev/Library/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jjcdev/Library.git"
+    },
+    "license": "ISC",
+    "author": "JJC",
+    "type": "commonjs",
+    "main": "index.js",
+    "scripts": {
+        "test": "test",
+        "start": "node scripts/index.js"
+    },
+    "dependencies": {
+        "argon2": "^0.44.0",
+        "cors": "^2.8.6",
+        "dotenv": "^17.3.1",
+        "express": "^5.2.1"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.14"
+    }
+}
