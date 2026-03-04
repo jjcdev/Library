@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true
         },
         repositoryBy: {
-            type: DataTypes.TEXT(30)
+            typ: DataTypes.TEXT(30)
         },
         isActive: {
             type: DataTypes.BOOLEAN,
