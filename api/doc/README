@@ -1,0 +1,62 @@
+Api_lib 2026
+commit: `www.github.com/jjcdev/library`
+
+<----- ROUTES ----->
+
+===> ROUTES PUBLIQUES
+Login (connexion): /api_lib/login
+    Method: POST
+    body:{
+        username: String,
+        password: String
+    }
+
+    Réponse: {
+            success: boolean,
+            message: String
+        }
+
+Signup (inscription): /api_lib/signup
+    Method: POST
+    body:{
+        firstname: String(10),
+        lastName: String(10),
+        password: String(15)
+    }
+
+    Réponse: {
+            success: boolean,
+            message: String
+        }
+
+===> ROUTES PRIVEES (après connexion)
+
+** Au chargement de la page **
+List : /api_lib/list
+Description: Liste de touts les livres présents dans la bibli
+Method: GET
+    body:{
+        accessToken:String
+    }
+
+    Réponse:{
+        {
+            id: String,
+            title: String,
+            author: String,
+            editingYear: INTEGER,
+            size:INTEGER,
+            repositoryBy: String
+        }
+    }
+
+** Commandes **
+Add : api_lib/add
+Description: Ajouter un livre
+Method: POST
+    body:{
+        title: String,
+        author: String,
+        editingYear: INTEGER,
+        repositoryBy: String
+    }
