@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT(10),
             allowNull: true
         },
+        email: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+            unique: true
+        },
         isActive: {
             type: DataTypes.BOOLEAN,
             defaultValue: true

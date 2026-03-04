@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-
+const list_middleware = require('../middlewares/list_middleware');
+const list = require("../functions/list");
+const signup = require('../functions/signup');
+const login = require('../functions/login');
 // Import your script routes here
-const exampleScriptRoute = require('./exampleScriptRoute');
-router.use('/example-script', exampleScriptRoute);
-router.get('/signup', (req, res) => {});
-router.get('/login', (req, res) => {});
-router.get('/search', (req, res) => {});
-router.get('/find', (req, res) => {});
+router.use('/api_lib');
+router.post('/signup', signup);
+router.post('/login', login);
+router.get('/list', list_middleware, list);
+router.delete('/delete', (req, res) => {});
 module.exports = router;
