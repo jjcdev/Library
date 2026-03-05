@@ -21,6 +21,7 @@ Signup (inscription): /api_lib/signup
     body:{
         firstname: String(10),
         lastName: String(10),
+        email: String(50),
         password: String(15)
     }
 
@@ -60,3 +61,16 @@ Method: POST
         editingYear: INTEGER,
         repositoryBy: String
     }
+
+<--------- PAR RAPPORT ET AUX TOKENS --------->
+
+Le access token envoyé ne dure que 1h
+Le refresh token envoyé ne dure que 30 jours
+
+Après la connexion,au bout de 1h, le serveur renvoie une erreur 403
+La vue doit alors automatiquement faire une requête GET (api_lib/refresh)
+pour recevoir de nouveaux tokens sans quoi l'utilisateur sera déconnecté!
+
+🛑🛑 ATTENTION 🛑🛑
+Chaque requête mise à part celle du login et signup doit porter
+en en-tête (header) le access token et le refresh token courant

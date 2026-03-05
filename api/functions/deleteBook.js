@@ -1,7 +1,7 @@
-const Book = require('../../models/Book');
+const Books = require('../models/Books');
 module.exports = (req, res) => {
     const { id } = req.body;
-    Book.destroy({ where: { id: id } })
+    Books.destroy({ where: { id: id } })
         .then(() => {
             res.status(200).json({
                 message: "Le livre a bien été supprimé de la bibliothèque"

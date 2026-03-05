@@ -12,13 +12,13 @@ const verifyPassword = async(password, hashedPassword) => {
 
 const generateToken = (userId) => {
     return jwt.sign({ id: userId },
-        process.env.JWT_SECRET || 'BT75G5Z9O22OP2', { expiresIn: '1h' }
+        process.env.SJWT, { expiresIn: '1h' }
     );
 };
 
 const generateRefreshToken = (userId) => {
     return jwt.sign({ id: userId },
-        process.env.JWT_REFRESH_SECRET || 'U7E53F35F35T3534', { expiresIn: '30d' }
+        process.env.SRJWT, { expiresIn: '30d' }
     );
 };
 

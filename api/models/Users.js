@@ -1,33 +1,42 @@
 module.exports = (sequelize, DataTypes) => {
-    const Users = sequelize.defined(Users, {
+    const User = sequelize.define('User', {
         id: {
             type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIV4D,
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true
         },
         lastName: {
-            type: DataTypes.TEXT(10),
+            type: DataTypes.STRING(50),
             allowNull: false
         },
         firstName: {
-            type: DataTypes.TEXT(10),
+            type: DataTypes.STRING(50),
             allowNull: true
         },
         email: {
             type: DataTypes.STRING(50),
             allowNull: false,
-            unique: true
+        },
+        password: {
+            type: DataTypes.STRING(500),
+            allowNull: false,
         },
         isActive: {
             type: DataTypes.BOOLEAN,
             defaultValue: true
         }
-    }, { tableName: "Users" })
-    Users.associate = (models) => {
-        Users.hasMany(models.Books, {
-            foreignKey: "id"
-        })
-    }
-    return Users
+    }, {
+        tableName: "Users",
+        indexes: [{
+            unique: true,
+            fields: ['email']
+        }]
+    });
 
-}
+    User.associate = (models) => {
+        User.hasMany(models.Token, { foreignKey: 'userId', onDelete: 'CASCADE' });
+        User.hasMany(models.Books, { foreignKey: 'userId', onDelete: 'CASCADE' });
+    }
+
+    return User;
+};

@@ -1,4 +1,4 @@
-const { Token } = require('../models');
+const Token = require('../models/Token');
 const { generateToken, generateRefreshToken } = require('../utils/auth');
 
 module.exports = async(req, res) => {

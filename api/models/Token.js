@@ -1,24 +1,35 @@
 module.exports = (sequelize, DataTypes) => {
-    const Token = sequelize.defined("Token", {
+    const Token = sequelize.define("Token", { // Correction : .define
         userId: {
-            DataTypes: DataTypes.UUID,
+            type: DataTypes.UUID, // Correction : 'type', pas 'DataTypes'
             allowNull: false
         },
         token: {
-            DataTypes: DataTypes.TEXT,
+            type: DataTypes.STRING(500), // Correction : 'type', pas 'DataTypes'
             allowNull: false,
-            unique: true
         },
         expireDate: {
             type: DataTypes.DATE,
             allowNull: false,
-            // C'est ici que la magie opère :
             defaultValue: () => {
                 const now = new Date();
-                return new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Ajoute 30 jours
+                // Expire dans 30 jours
+                return new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
             }
         }
     }, {
         tableName: "Token",
-    })
-}
+        indexes: [{
+            unique: true,
+            fields: ['token']
+        }]
+    });
+
+    Token.associate = (models) => {
+        Token.belongsTo(models.User, {
+            foreignKey: 'userId'
+        });
+    };
+
+    return Token;
+};
