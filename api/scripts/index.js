@@ -19,7 +19,6 @@ const login = require('../functions/login');
 const list = require("../functions/list");
 const refresh = require('../functions/refresh');
 const infos = require('../functions/infos');
-const bodyParser = require("body-parser")
 const deleteBook = require('../functions/deleteBook');
 
 const router = express.Router();
