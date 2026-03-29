@@ -4,7 +4,8 @@ Par: JJC DEV
 <----- ROUTES ----->
 
 ===> ROUTES PUBLIQUES
-Login (connexion): /api_lib/login
+
+:::: Login (connexion): /api_lib/login
     Method: POST
     body:{
         email: String,
@@ -17,7 +18,7 @@ Login (connexion): /api_lib/login
         user: Object
     }
 
-Signup (inscription): /api_lib/signup
+:::: Signup (inscription): /api_lib/signup
     Method: POST
     body:{
         firstname: String,
@@ -34,7 +35,7 @@ Signup (inscription): /api_lib/signup
 ===> ROUTES PRIVEES (après connexion)
 
 ** Au chargement de la page **
-List : /api_lib/list
+:::: List : /api_lib/list
 Description: Liste de touts les livres présents dans la bibli
 Method: GET
 
@@ -44,7 +45,7 @@ Method: GET
     }
 
 ** Commandes **
-Add : api_lib/add
+:::: Add : api_lib/add
 Description: Ajouter un livre
 Method: POST
     body:{
@@ -54,7 +55,7 @@ Method: POST
         size: INTEGER
     }
 
-Delete : /api_lib/delete
+:::: Delete : /api_lib/delete
 Description: Supprimer un livre
 Method: DELETE
     body:{
