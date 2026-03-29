@@ -30,7 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         indexes: [{
             unique: true,
             fields: ['email']
-        }]
+        }],
+        defaultScopes: {
+            attributes: { exclude: ['password'] }
+        }
     });
 
     User.associate = (models) => {

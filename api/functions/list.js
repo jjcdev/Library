@@ -1,5 +1,12 @@
 const Books = require('../models/Books')
-module.exports = (req, res) => {
+
+/**
+ * Récupère la liste complète des livres de la bibliothèque.
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+module.exports = (req, res, next) => {
     Books.findAll()
         .then(books => {
             res.status(200).json({
@@ -8,9 +15,7 @@ module.exports = (req, res) => {
             })
         })
         .catch(err => {
-            res.status(500).json({
-                message: "Erreur lors de la récupération des livres",
-                error: err.message
-            })
+            err.status = 500;
+            next(err);
         })
 }

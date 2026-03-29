@@ -1,17 +1,24 @@
 const User = require('../models/Users');
 
-module.exports = async(req, res) => {
+/**
+ * Récupère les informations de profil de l'utilisateur authentifié.
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+module.exports = async(req, res, next) => {
     try {
         const userId = req.auth.userId;
         const user = await User.findByPk(userId, {
             attributes: ['id', 'username', 'email']
         });
         if (!user) {
-            return res.status(404).json({ error: "Utilisateur non trouvé" });
+            const error = new Error("Utilisateur introuvable! Vérifiez vos informations!");
+            error.status = 403;
+            throw error
         }
         res.status(200).json(user);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Erreur lors de la récupération des infos" });
+        next(error);
     }
 };

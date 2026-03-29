@@ -1,5 +1,12 @@
 const Books = require('../models/Books');
-module.exports = (req, res) => {
+
+/**
+ * Supprime un livre de la bibliothèque par son ID.
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+module.exports = (req, res, next) => {
     const { id } = req.body;
     Books.destroy({ where: { id: id } })
         .then(() => {
@@ -7,9 +14,8 @@ module.exports = (req, res) => {
                 message: "Le livre a bien été supprimé de la bibliothèque"
             })
         }).catch(err => {
-            res.status(500).json({
-                message: "Erreur lors de la suppression du livre",
-                error: err.message
-            })
+            const error = new Error("Un problème est survenu lors de la suppression du livre ! Veuillez réessayer.");
+            error.status = 500;
+            next(error);
         })
 }

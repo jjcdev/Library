@@ -1,15 +1,23 @@
 const Token = require('../models/Token');
 const { generateToken, generateRefreshToken } = require('../utils/auth');
 
-module.exports = async(req, res) => {
+/**
+ * Renouvelle le token d'accès en utilisant un refresh token valide.
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+module.exports = async(req, res, next) => {
     try {
         const oldRToken = req.body.refreshToken;
 
-        const tokenFound = await RefreshToken.findOne({ where: { token: oldRToken } });
+        const tokenFound = await Token.findOne({ where: { token: oldRToken } });
 
-        if (!tokenFound || RefreshToken.verifyExpiration(tokenFound)) {
+        if (!tokenFound || Token.verifyExpiration(tokenFound)) {
             if (tokenFound) await tokenFound.destroy();
-            return res.status(403).json({ error: "Session expirée, reconnectez-vous." });
+            const error = new Error("Votre session a expiré ! Merci de vous reconnecter.");
+            error.status = 403;
+            throw error
         }
 
         const userId = tokenFound.userId;
@@ -17,7 +25,7 @@ module.exports = async(req, res) => {
         const newRTokenString = generateRefreshToken(userId);
 
         await tokenFound.destroy();
-        await RefreshToken.create({
+        await Token.create({
             token: newRTokenString,
             userId: userId
         });
@@ -28,6 +36,6 @@ module.exports = async(req, res) => {
         });
 
     } catch (error) {
-        res.status(500).json({ error: "Erreur lors du rafraîchissement" });
+        next(error);
     }
 };

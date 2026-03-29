@@ -1,22 +1,28 @@
 const Books = require("../models").Books;
-module.exports = (req, res) => {
-    const { name, author, size, year } = req.body;
-    const newBook = Books.create({
+
+/**
+ * Ajoute un nouveau livre à la base de données.
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+module.exports = async(req, res, next) => {
+    try {
+        const { name, author, size, year } = req.body;
+        const book = await Books.create({
             title: name,
             author: author,
             size: size,
             editingYear: year
-        })
-        .then(book => {
-            res.status(200).json({
-                message: "Le livre a bien été ajouté à la bibliothèque",
-                book: book
-            })
-        }).catch(err => {
-            res.status(500).json({
-                message: "Le livre n'a pas pu être ajouté à la bibliothèque",
-                error: err.message
-            })
-        })
-    return newBook
+        });
+
+        res.status(201).json({
+            message: "Le livre a bien été ajouté à la bibliothèque",
+            book: book
+        });
+    } catch (error) {
+        const err = new Error("Le livre n'a pas pu être ajouté à la bibliothèque !");
+        err.status = 500;
+        next(err);
+    }
 }

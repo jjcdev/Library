@@ -1,17 +1,28 @@
 const { User } = require("../models");
 const { hashPassword } = require('../utils/auth');
+const validator = require('validator');
 
-module.exports = async(req, res) => {
+/**
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+module.exports = async(req, res, next) => {
     try {
         const { lastname, firstname, email, password } = req.body;
+        const cleanEmail = validator.normalizeEmail(email) || email;
+        if (!validator.isEmail(cleanEmail)) {
+            const error = new Error("Email invalide ou déjà utilisé !")
+            error.status = 400;
+            throw error;
+        }
 
         const exist = await User.findOne({ where: { email } });
 
         if (exist) {
-            return res.status(400).json({
-                success: false,
-                message: "Email invalide ou déjà utilisé!"
-            });
+            const error = new Error("Email invalide ou déjà utilisé!")
+            error.status = 400;
+            throw error;
         }
 
         const passHash = await hashPassword(password);
@@ -19,19 +30,16 @@ module.exports = async(req, res) => {
         await User.create({
             firstName: firstname,
             lastName: lastname,
-            email: email,
+            email: cleanEmail,
             password: passHash
         });
 
-        return res.status(200).json({
+        return res.status(201).json({
             success: true,
             message: 'Inscription réussie'
         });
 
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: "Erreur lors de l'inscription!"
-        });
+        next(error)
     }
 };

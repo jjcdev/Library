@@ -2,7 +2,13 @@ const { User } = require("../models");
 const Token = require("../models/Token");
 const { verifyPassword, generateToken, generateRefreshToken } = require('../utils/auth');
 
-module.exports = async(req, res) => {
+/**
+ * Authentifie un utilisateur et génère les tokens d'accès.
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+module.exports = async(req, res, next) => {
     try {
         const { email, password } = req.body;
 
@@ -22,23 +28,28 @@ module.exports = async(req, res) => {
                 token: rToken
             })
             if (!registerToken) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Une erreur s'est produite"
-                })
+                const error = new Error("Une erreur s'est produite!")
+                error.status = 500
+                throw error
             }
+
+            const userResponse = {
+                id: us.id,
+                email: us.email,
+                firstName: us.firstName,
+                lastName: us.lastName
+            };
+
             return res.status(200).json({
                 message: "Connexion réussie",
                 token: token,
-                user: us
+                user: userResponse
             });
         } else {
             return res.status(401).json({ error: "Nom d'utilisateur ou mot de passe incorrect" });
         }
 
     } catch (error) {
-        // Toujours gérer les erreurs pour éviter que le serveur ne crash
-        console.error(error);
-        res.status(500).json({ error: "Erreur serveur" });
+        next(error)
     }
 };

@@ -3,28 +3,30 @@ const mysql = require('mysql2/promise');
 
 const dbName = 'Library';
 
-// 1. Fonction pour créer la BDD si elle n'existe pas
+/**
+ * Initialise la base de données MySQL si elle n'existe pas encore.
+ */
 const setupDatabase = async() => {
     try {
         const connection = await mysql.createConnection({
             host: 'localhost',
             port: 3306,
-            user: 'root',
-            password: '' // Vide pour Laragon
+            user: process.env.DB_USER || 'root',
+            password: process.env.DB_PASSWORD || ''
         });
 
         await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\`;`);
-        console.log(`✅ Base de données "${dbName}" prête.`);
         await connection.end();
     } catch (error) {
-        console.error('❌ Erreur lors de la création de la base :', error.message);
         throw error;
     }
 };
 
-// 2. Instance Sequelize (Une seule déclaration propre)
+/**
+ * Instance Sequelize configurée pour la connexion à la base de données.
+ */
 const sequelizeInstance = new Sequelize(dbName, 'root', '', {
-    host: 'localhost',
+    host: process.env.DB_HOST || 'localhost',
     port: 3306,
     dialect: 'mysql',
     logging: false,
@@ -33,7 +35,6 @@ const sequelizeInstance = new Sequelize(dbName, 'root', '', {
     }
 });
 
-// 3. Exportation correcte
 module.exports = {
     sequelize: sequelizeInstance,
     initialize: setupDatabase
