@@ -28,7 +28,7 @@ router.get('/infos', auth_middleware, infos);
 router.get('/refresh', auth_middleware, refresh);
 router.delete("/delete", auth_middleware, deleteBook);
 router.get("/health", (req, res) => res.send("API en vie"));
-app.use('/api_lib', router);
+app.use('/api', router);
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 8100;
