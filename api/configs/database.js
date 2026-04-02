@@ -14,7 +14,7 @@ const setupDatabase = async() => {
             user: process.env.DB_USER || 'library_user',
             password: process.env.DB_PASS
         });
-
+        // On laisse la création de la base de données à l'administrateur de la plateforme d'hébergement (alwaysdata) pour éviter les problèmes de permissions.
         //    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\`;`);
         await connection.end();
     } catch (error) {
