@@ -45,7 +45,7 @@ async function App() {
             console.log(`Serveur démaré sur le port ${PORT}`);
         });
     } catch (error) {
-        console.error("Une erreur s'est produite")
+        console.error("Une erreur s'est produite", error)
         process.exit(1);
     }
 }
