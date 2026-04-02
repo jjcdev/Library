@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 const mysql = require('mysql2/promise');
 
-const dbName = 'Library';
+const dbName = 'library_db';
 
 /**
  * Initialise la base de données MySQL si elle n'existe pas encore.
@@ -9,13 +9,13 @@ const dbName = 'Library';
 const setupDatabase = async() => {
     try {
         const connection = await mysql.createConnection({
-            host: 'localhost',
-            port: 3306,
-            user: process.env.DB_USER || 'root',
-            password: process.env.DB_PASSWORD || ''
+            host: process.env.DB_HOST || 'mysql-library.alwaysdata.net',
+            port: process.env.DB_PORT || 3306,
+            user: process.env.DB_USER || 'library_user',
+            password: process.env.DB_PASS
         });
 
-        await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\`;`);
+        //    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\`;`);
         await connection.end();
     } catch (error) {
         throw error;
@@ -25,15 +25,18 @@ const setupDatabase = async() => {
 /**
  * Instance Sequelize configurée pour la connexion à la base de données.
  */
-const sequelizeInstance = new Sequelize(dbName, 'root', '', {
-    host: process.env.DB_HOST || 'localhost',
-    port: 3306,
-    dialect: 'mysql',
-    logging: false,
-    define: {
-        timestamps: true
-    }
-});
+const sequelizeInstance = new Sequelize(
+    process.env.DB_NAME || dbName,
+    process.env.DB_USER || 'library_user',
+    process.env.DB_PASS, {
+        host: process.env.DB_HOST || 'mysql-library.alwaysdata.net',
+        port: process.env.DB_PORT || 3306,
+        dialect: 'mysql',
+        logging: false,
+        define: {
+            timestamps: true
+        }
+    });
 
 module.exports = {
     sequelize: sequelizeInstance,
