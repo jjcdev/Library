@@ -41,7 +41,9 @@ async function App() {
         await initialize();
         const isDev = process.env.NODE_ENV === 'development';
         await sequelize.sync({ alter: isDev });
-        app.listen(PORT);
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log(`Serveur démaré sur le port ${PORT}`);
+        });
     } catch (error) {
         process.exit(1);
     }
