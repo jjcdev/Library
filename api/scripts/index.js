@@ -31,7 +31,7 @@ router.delete("/delete", auth_middleware, deleteBook);
 app.use('/api_lib', router);
 app.use(errorMiddleware);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8100;
 
 /**
  * Démarre le serveur et synchronise la base de données.

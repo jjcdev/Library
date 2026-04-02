@@ -16,7 +16,7 @@
     "main": "index.js",
     "scripts": {
         "test": "test",
-        "start": "nodemon scripts/index.js"
+        "start": "node scripts/index.js"
     },
     "dependencies": {
         "argon2": "^0.44.0",
