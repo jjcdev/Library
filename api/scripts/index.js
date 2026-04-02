@@ -27,7 +27,7 @@ router.get('/list', auth_middleware, list);
 router.get('/infos', auth_middleware, infos);
 router.get('/refresh', auth_middleware, refresh);
 router.delete("/delete", auth_middleware, deleteBook);
-router.get("/test", console.log("Test route working!"));
+router.get("/health", console.log("Test route working!"));
 app.use('/api_lib', router);
 app.use(errorMiddleware);
 
